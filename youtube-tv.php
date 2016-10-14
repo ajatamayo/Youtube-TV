@@ -1,7 +1,7 @@
 <?php
 /**
  * Plugin Name: CA Youtube Playlist
- * Description: Adds the <code>ca_youtube_playlist</code> shortcode.
+ * Description: Adds the <code>ca_youtube_playlist</code> shortcode. Specify the <code>playlist</code> attribute (required). Optionally set the height of the display via the <code>height</code> attribute.
  * Plugin URI:  https://github.com/ajatamayo/Youtube-TV
  * Version:     1.0
  * Author:      AJ Tamayo
@@ -98,7 +98,7 @@ class CA_Youtube_Playlist {
         <div class="wrap">
 
             <h1><?php _e( 'Youtube Playlist', 'ca-youtube-playlist' ); ?></h1>
-            <p><?php _e( 'Adds the <code>ca_youtube_playlist</code> shortcode.', 'ca-youtube-playlist' ); ?></p>
+            <p><?php _e( 'Adds the <code>ca_youtube_playlist</code> shortcode. Specify the <code>playlist</code> attribute (required). Optionally set the height of the display via the <code>height</code> attribute.', 'ca-youtube-playlist' ); ?></p>
 
             <form method="POST">
                 <table class="widefat striped" style="max-width: 500px;">
@@ -143,10 +143,15 @@ class CA_Youtube_Playlist {
         $id = 'ytpl-' . uniqid();
         $settings = get_option( $this->option_name, $this->default_options );
 
+        $atts = shortcode_atts( array(
+            'height' => 400,
+            'playlist' => '',
+        ), $atts );
+
         ob_start();
         ?>
 
-        <div id="<?php echo $id; ?>" class="ca-youtube-playlist" data-api_key="<?php echo $settings['api_key']; ?>" data-playlist="<?php echo $atts['playlist']; ?>"></div>
+        <div id="<?php echo $id; ?>" class="ca-youtube-playlist" data-api_key="<?php echo $settings['api_key']; ?>" data-playlist="<?php echo $atts['playlist']; ?>" style="height: <?php echo $height; ?>px;"></div>
 
         <?php return ob_get_clean();
     }
